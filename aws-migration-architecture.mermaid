@@ -1,0 +1,34 @@
+graph LR
+    subgraph "Data Center Corporativo on-premises"
+        AppVM["Servidor de Aplicação\n(VM)"]
+        DBVM["Servidor de BD"]
+    end
+
+    subgraph "AWS Cloud"
+        subgraph VPC["VPC"]
+            subgraph AZ1["Availability Zone 1"]
+                subgraph PubSub["Public Subnet"]
+                    EC2["Amazon EC2 (App)"]
+                end
+                subgraph PrivSub["Private Subnet"]
+                    RDS["Amazon RDS (DB)"]
+                end
+            end
+            IGW["Internet Gateway"]
+        end
+    end
+
+    AppVM --> EC2
+    DBVM --> RDS
+    EC2 --> RDS
+    EC2 --- IGW
+    
+    classDef aws fill:#232f3e,stroke:#232f3e,color:white
+    classDef vpc fill:#1a476f,stroke:#1a476f,color:white
+    classDef public fill:#4e8b41,stroke:#4e8b41,color:white
+    classDef private fill:#2f6697,stroke:#2f6697,color:white
+    
+    class VPC vpc
+    class EC2,RDS aws
+    class PubSub public
+    class PrivSub private
